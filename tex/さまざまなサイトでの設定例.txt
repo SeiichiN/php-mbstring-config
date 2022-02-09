@@ -1,0 +1,257 @@
+
+さまざまなサイトでの設定例
+
+==============================================================================
+日本語環境の設定 - mbstring(PHP入門)
+https://webkaru.net/php/mbstring-php-ini/
+    (記事執筆時の日時は不明)    
+
+mbstringの設定
+
+日本語環境（UTF-8）を設定するにはPHPの設定ファイル（php.ini）のmbstringを設定します。以下は設定例です。
+
+[mbstring]
+; language for internal character representation.
+; http://php.net/mbstring.language
+mbstring.language = Japanese ← コメント（;）をはずします。
+
+; internal/script encoding.
+; Some encoding cannot work as internal encoding.
+; (e.g. SJIS, BIG5, ISO-2022-*)
+; http://php.net/mbstring.internal-encoding
+mbstring.internal_encoding = UTF-8 ← コメントをはずし、内部エンコーディングをUTF-8へ。
+
+; http input encoding.
+; http://php.net/mbstring.http-input
+mbstring.http_input = auto ← コメント（;）をはずします。
+
+; http output encoding. mb_output_handler must be
+; registered as output buffer to function
+; http://php.net/mbstring.http-output
+mbstring.http_output = UTF-8 ← コメントをはずし、エンコーディングをUTF-8へ。
+
+; enable automatic encoding translation according to
+; mbstring.internal_encoding setting. Input chars are
+:
+; enable automatic encoding translation according to
+; mbstring.internal_encoding setting. Input chars are
+; converted to internal encoding by setting this to On.
+; Note: Do _not_ use automatic encoding translation for
+;       portable libs/applications.
+; http://php.net/mbstring.encoding-translation
+mbstring.encoding_translation = On ← コメントをはずし、Onに。
+
+; automatic encoding detection order.
+; auto means
+; http://php.net/mbstring.detect-order
+mbstring.detect_order = auto ← コメント（;）をはずします。
+==============================================================================
+
+
+
+
+==============================================================================
+PHPでmbstringを設定して日本語環境に対応する方法を現役エンジニアが解説【初心者向け】(TechAcademy)
+https://techacademy.jp/magazine/39850
+(2019/6/30)
+
+
+次にmbstringの設定を行います。
+
+php.iniで「mbstring.internal_encoding」を検索します。mbstring.internal_encoding = 文字コード で設定することで、マルチバイト文字列関数でエンコードを行う際にここで設定された文字コードがデフォルト文字コードとなります。
+
+下記の例では、文字コードを「UTF-8」に指定しています。
+
+php.iniで「mbstring.language」を検索します。mbstring.language = 言語 で設定することで、mbstringで使用するデフォルトの言語を指定します。
+
+下記の例では、デフォルトに「Japanese」を設定することで日本語に設定しています。
+
+php.iniで「mbstring.detect_order」を検索します。mbstring.detect_order = 文字コード で設定することで、文字コードの自動判別を行う時にどの文字コードから順に確認していくのかを指定します。
+
+最後にphp.iniファイルを保存し、設定は完了です。
+==============================================================================
+
+
+
+==============================================================================
+php.iniファイルの作成と初期設定(Let'sプログラミング)
+https://www.javadrive.jp/php/install/index5.html#section5
+(TATSUO IKURA)
+(原稿執筆時の日時は不明)
+
+; 次の 3 項目は PHP 8 で非推奨となりました
+;mbstring.internal_encoding =
+;mbstring.http_input =
+;mbstring.http_output =
+
+[mbstring]
+mbstring.language = Japanese
+mbstring.encoding_translation = Off
+mbstring.detect_order = UTF-8,SJIS,EUC-JP,JIS,ASCII
+mbstring.substitute_character = none
+mbstring.strict_detection = Off
+==============================================================================
+
+
+
+
+==============================================================================
+日本語利用の為の設定(PHPBook)
+http://phpbook.s25.xrea.com/install/phpini/index5.html#section2
+(原稿執筆時の日時は不明)
+(TATSUO IKURA)
+
+[mbstring]
+mbstring.language = Japanese
+mbstring.internal_encoding = UTF-8
+mbstring.http_input = pass
+mbstring.http_output = pass
+mbstring.encoding_translation = Off
+mbstring.detect_order = UTF-8,SJIS,EUC-JP,JIS,ASCII
+mbstring.substitute_character = none
+mbstring.func_overload = 0
+mbstring.strict_detection = Off
+;mbstring.http_output_conv_mimetype=
+==============================================================================
+
+
+
+
+==============================================================================
+知っておきたいphp.iniの設定(KENスクールブログ)
+https://www.kenschool.jp/blog/?p=2347
+2017年04月04日
+
+
+default_charset = UTF-8
+date.timezone=Asia/Tokyo
+
+【マルチバイト文字にかかわる環境変数】
+mbstring.language = Japanese
+mbstring.internal_encoding = UTF-8
+mbstring.encoding_translation = Off
+mbstring.http_input = pass
+mbstring.http_output = pass
+mbstring.detect_order = auto
+==============================================================================
+
+
+
+
+
+==============================================================================
+php.iniの編集(Qiita)
+https://qiita.com/hikotaro_san/items/0aab2a53726674c50868
+(投稿日 2017年01月02日)
+
+
+out_handler
+
+outout_handler = mb_output_handler
+PHPの初期設定では、処理結果をいったん専用の領域に格納しておき、処理がすべて完了した時点でクライアントに送信する(バッファリング)ようになっています。
+output_handlerを指定した場合、指定したエンコード(文字の符号化)方式で文字のエンコード処理が行われます。
+つまり、バッファを出力する際に文字コード変換が行われるようになります。
+default_charset
+
+default_charset = "UTF-8"
+HTTPヘッダに出力するデフォルトの文字コードを指定します。
+mbstring 関数で mbstring.http_input mbstring.http_output mbstring.internal_encoding が未設定の場合のデフォルトとしても用いられます。
+mbstring.language
+
+mbstring.language = Japanesee
+デフォルトで使用する言語を指定します。
+mbstring.encoding_translation
+
+mbstring.encoding_translation = off
+HTTP入力用文字エンコードの自動変換を指定します。
+mbstring.detect_order
+
+mbstring.detect_order = UTF-8,SJIS,EUC-JP,JIS,ASCII
+PHPのソースファイルで使用される文字のエンコード方式の検出順を指定します。
+mbstring.substitute_character
+
+mbstring.substitute_character = none
+コードとして変換できない文字がある場合に、代替の文字を出力しないように指定します。
+date.timezone
+
+date.timezone = Aisa/Tokyo
+タイムゾーンを指定します。
+PHP 5.6.0　以前のバージョンの場合
+
+PHP 5.6.0 で、以下の指定が非推奨になりました。
+PHP 5.6.0 以前のバージョンを使用する場合は、php.iniを編集してください。
+mbstring.internal_encoding
+
+mbstring.internal_encoding = UTF-8
+PHPのソースファイルで使用するエンコード方式を指定します。
+この機能は PHP 5.6.0 で 非推奨になります。
+PHP 5.6 以降のユーザーは、これを空のままにしておいて、代わりに default_charset を設定してください。
+mbstring.http_input
+
+mbstring.http_input = auto
+HTTP入力用文字エンコードを自動検出させるように指定します。
+この機能は PHP 5.6.0 で 非推奨になります。
+PHP 5.6 以降のユーザーは、これを空のままにしておいて、代わりにdefault_charset を設定してください。
+mbstring.http_output
+
+mbstring.http_output = pass
+HTTP出力用文字エンコードの自動検出をパスするように指定します。
+この機能は PHP 5.6.0 で 非推奨になります。
+PHP 5.6 以降のユーザーは、これを空のままにしておいて、代わりに default_charset を設定してください
+==============================================================================
+
+
+==============================================================================
+PHP Windows版のインストール、php.iniの設定、マルチバイト文字列（mbstring）を有効にする。(MEMORVA)
+更新：2021-11-25
+
+php.ini の基本的な設定
+
+デフォルトではマルチバイト文字列（mbstring）が使えない状態になっている。 つまり、mb_ereg_replace()、mb_internal_encoding()、mb_regex_encoding() といった mb で始まる関数を実行してもエラーになる。 このままだと日本語を扱うのに不便なので、以下の手順で mbstring を有効にする。
+
+    展開したフォルダの中に php.ini-development と php.ini-production があるが、公式では php.ini-production をオススメしているので、ここではこれを使う。
+    php.ini-production をコピーして php.ini にリネームし、同じフォルダに置く。
+    php.ini をテキストエディタで開き、「Dynamic Extensions」のセクションに記されている以下の箇所のコメント（; セミコロン）を外して有効にする。 また2021年現在、https（SSL）を使用したサイトが一般的で、そういったサイトから file_get_contents() 関数などを使用してデータを取得する際、opensslも有効にしておかないとエラーが発生する。
+
+    extension_dir = "ext"
+
+    extension=mbstring
+    extension=openssl
+
+    その他、使用可能なメモリー、タイムゾーンなども設定しておくとよい。 これらのせいで警告やエラーが出る場合がある。
+
+    memory_limit = 512M
+
+    date.timezone = Asia/Tokyo
+
+    デフォルトのメモリーサイズは128Mになっているので、足りない場合に必要に応じて増やす。 PHPのコード中に以下のように書いてもメモリーサイズを変更できる。
+
+    ini_set('memory_limit', '512M');
+
+(mbstringについての具体的な設定は書かれていない --- 糠山)
+==============================================================================
+
+
+
+==============================================================================
+PHP 8.x での php.ini の設定について(zenn)
+https://zenn.dev/ksh2ksk4/articles/3cb75ed89ae662c1352d
+2021.05.04に公開
+
+
+php.ini
+
+date.timezone = Asia/Tokyo
+
+mbstring
+
+mbstring.language = Japanese
+mbstring.detect_order = ASCII,ISO-2022-JP,UTF-8,eucJP-win,SJIS-win
+mbstring.substitute_character = none
+mbstring.func_overload = 0
+==============================================================================
+
+
+
+        
+;; 修正時刻: Wed Feb  9 10:24:07 2022

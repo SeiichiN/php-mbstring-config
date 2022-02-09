@@ -1,0 +1,153 @@
+\documentclass[uplatex, dvipdfmx]{jsarticle}
+
+\include{begin}
+
+\section{現状}
+
+\subsection{php7入門ノートでの記述}
+
+
+\subsection{PHPマニュアルでの記述}
+
+\vspace{3mm}
+\begin{tabular}{|l|l|l|} \hline
+ mbstring.language & ``neutral'' &  \\
+ mbstring.detect\_order & NULL & \\
+ mbstring.http\_input & ``pass'' & 非推奨 \\
+ mbstring.http\_output & ``pass'' &  非推奨 \\
+ mbstring.internal\_encoding & NULL & 非推奨 \\
+ mbstring.substitute\_character & NULL &  \\
+ mbstring.func\_overload & ``0'' &  非推奨/PHP8で削除 \\
+ mbstring.encoding\_translation & ``0'' & \\
+ mbstring.http\_output\_conv\_mimetypes& (略) & \\
+ mbstring.strict\_detection & ``0'' & \\ \hline
+\end{tabular}
+\vspace{3mm}
+
+\href{https://www.php.net/manual/ja/mbstring.configuration.php}{実行時設定 PHPマニュアル}
+
+\subsection{デフォルトでの状況}
+
+以下の1箇所のみ記述を加えた状態で、あとはコメントのままだと、どうなるか？
+
+\vspace{3mm}
+\begin{tabular}{|l|} \hline
+704 date.timezone = Asia/Tokyo \\
+
+[mbstring] \\
+ ;mbstring.language = Japanese \\
+ ;mbstring.internal\_encoding = EUC-JP \\
+ ;mbstring.http\_input = auto  \\
+ ;mbstring.http\_output = SJIS \\
+ ;mbstring.encoding\_translation = Off \\
+ ;mbstring.detect\_order = auto \\
+ ;mbstring.substitute\_character = none; \\
+ ;mbstring.func\_overload = 0 \\
+ ;mbstring.strict\_detection = Off \\ \hline
+\end{tabular}
+\vspace{3mm}
+
+以下は、print\_r(mb\_get\_info()); の出力例
+
+\begin{verbatim}
+-------------------------------------------------------------------    
+      Array
+(
+    [internal_encoding] => UTF-8
+    [http_output] => UTF-8
+    [http_output_conv_mimetypes] => ^(text/|application/xhtml\+xml)
+    [func_overload] => 0
+    [func_overload_list] => no overload
+    [mail_charset] => UTF-8
+    [mail_header_encoding] => BASE64
+    [mail_body_encoding] => BASE64
+    [illegal_chars] => 0
+    [encoding_translation] => Off
+    [language] => neutral
+    [detect_order] => Array
+        (
+            [0] => ASCII
+            [1] => UTF-8
+        )
+
+    [substitute_character] => 63
+    [strict_detection] => Off
+)
+-------------------------------------------------------------------    
+\end{verbatim}
+
+ちなみに \textsf{default\_charset} は 初期値で \textsf{UTF-8} になっている。
+
+\subsection{mbstring.language = Japanese を指定する}
+
+コメントを削除して
+\textsf{mbstring.language = Japanese} を指定した場合は、
+デフォルトの場合から変化したのは、以下の箇所。
+
+\begin{verbatim}
+-------------------------------------------------------------------    
+[mail_charset] => ISO-2022-JP
+[mail_header_encoding] => BASE64
+[mail_body_encoding] => 7bit
+[language] => Japanese
+[detect_order] => Array
+    (
+        [0] => ASCII
+        [1] => JIS
+        [2] => UTF-8
+        [3] => EUC-JP
+        [4] => SJIS
+    )
+-------------------------------------------------------------------    
+\end{verbatim}
+
+これらの設定は、mb\_send\_mail() を使うときに必要となる。
+
+デフォルトのままで apache を起動し、あとから
+\fbox{mb\_language('Japanese')} として
+設定を変更させた場合は、以下のようになる。
+
+\begin{verbatim}
+-------------------------------------------------------------------    
+[mail_charset] => ISO-2022-JP
+[mail_body_encoding] => 7bit
+[language] => Japanese
+-------------------------------------------------------------------    
+\end{verbatim}
+
+\textsf{detect\_order} には反映されないので、\\
+\fbox{mb\_detect\_order("ASCII,JIS,UTF-8,EUC-JP,SJIS");} \\
+という関数を実行させる必要があるかもしれない。
+
+ただ、\textsf{PHPMailer} を使って SMTP送信をするのには、mb\_send\_mail() は
+必要ないので、mbstring.language = Japanese の設定は不要である。
+
+\section{結論}
+
+あとは初期値のままでかまわないというのであるなら、php.ini の設定箇所は、
+
+\begin{tcolorbox}
+date.timezone = Asia/Tokyo
+\end{tcolorbox}
+
+上の1箇所でいいということになる。
+
+mbstring関連以外も含めると、以下のようになる。
+
+\begin{tcolorbox}
+307 memory\_limit = 512M \\
+375 display\_errors = on \\
+494 post\_max\_size = 512M \\
+518 default\_charset = "UTF-8" \\
+607 upload\_max\_filesize = 512M \\
+705 date.timezone = Asia/Tokyo
+\end{tcolorbox}
+
+512M は、WordPressでバックアップを復元することを考慮した。
+
+
+
+
+\include{end}
+
+%% 修正時刻： Wed Feb  9 21:39:51 2022

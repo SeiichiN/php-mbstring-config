@@ -1,0 +1,263 @@
+
+
+517 default_charset = "UTF-8"
+704 date.timezone = Asia/Tokyo
+
+[mbstring]
+; language for internal character representation.
+;mbstring.language = Japanese
+
+
+; internal/script encoding.
+; Some encoding cannot work as internal encoding.
+; (e.g. SJIS, BIG5, ISO-2022-*)
+X;mbstring.internal_encoding = EUC-JP
+
+; http input encoding.
+X;mbstring.http_input = auto
+
+; http output encoding. mb_output_handler must be
+; registered as output buffer to function
+X;mbstring.http_output = SJIS
+
+; enable automatic encoding translation according to
+; mbstring.internal_encoding setting. Input chars are
+; converted to internal encoding by setting this to On.
+; Note: Do _not_ use automatic encoding translation for
+;       portable libs/applications.
+;mbstring.encoding_translation = Off
+
+; automatic encoding detection order.
+; auto means
+;mbstring.detect_order = auto
+
+; substitute_character used when character cannot be converted
+; one from another
+;mbstring.substitute_character = none;
+
+; overload(replace) single byte functions by mbstring functions.
+; mail(), ereg(), etc are overloaded by mb_send_mail(), mb_ereg(),
+; etc. Possible values are 0,1,2,4 or combination of them.
+; For example, 7 for overload everything.
+; 0: No overload
+; 1: Overload mail() function
+; 2: Overload str*() functions
+; 4: Overload ereg*() functions
+X;mbstring.func_overload = 0
+
+; enable strict encoding detection.
+;mbstring.strict_detection = Off
+
+
+
+上記の設定で Apache を動作させたときの値
+mbstring
+      Array
+(
+    [internal_encoding] => UTF-8
+    [http_output] => UTF-8
+    [http_output_conv_mimetypes] => ^(text/|application/xhtml\+xml)
+    [func_overload] => 0
+    [func_overload_list] => no overload
+    [mail_charset] => UTF-8
+    [mail_header_encoding] => BASE64
+    [mail_body_encoding] => BASE64
+    [illegal_chars] => 0
+    [encoding_translation] => Off
+    [language] => neutral
+    [detect_order] => Array
+        (
+            [0] => ASCII
+            [1] => UTF-8
+        )
+
+    [substitute_character] => 63
+    [strict_detection] => Off
+)
+
+設定を変更させる
+
+
+(1) mbstring.language = Japanese とした場合
+
+mbstring
+      Array
+(
+    [internal_encoding] => UTF-8
+    [http_output] => UTF-8
+    [http_output_conv_mimetypes] => ^(text/|application/xhtml\+xml)
+    [func_overload] => 0
+    [func_overload_list] => no overload
+    [mail_charset] => ISO-2022-JP
+    [mail_header_encoding] => BASE64
+    [mail_body_encoding] => 7bit
+    [illegal_chars] => 0
+    [encoding_translation] => Off
+    [language] => Japanese
+    [detect_order] => Array
+        (
+            [0] => ASCII
+            [1] => JIS
+            [2] => UTF-8
+            [3] => EUC-JP
+            [4] => SJIS
+        )
+
+    [substitute_character] => 63
+    [strict_detection] => Off
+)
+
+
+以下の部分に反映が見られた
+
+[mail_charset] => ISO-2022-JP
+[mail_header_encoding] => BASE64
+[mail_body_encoding] => 7bit
+[language] => Japanese
+[detect_order] => Array
+    (
+        [0] => ASCII
+        [1] => JIS
+        [2] => UTF-8
+        [3] => EUC-JP
+        [4] => SJIS
+    )
+
+mbstring.language を japanese にすると、mail_charset が ISO-2022-JP に
+なる。これは、mb-send_mail() のエンコードに反映される。
+
+ヘッダと本文は mb_language() の設定に基づき変換、エンコードされます。 これは mail() のラッパー関数です。詳細は、 mail() を参照ください。
+(PHPマニュアル 「mb_send_mail」 https://www.php.net/manual/ja/function.mb-send-mail.php)
+
+ということは、メール発信に mb_send_mail() を使わずに PHPMailer を使うのだったら、
+ここの設定は必要ないのでは？
+
+
+
+
+
+
+(2) mbstring.encoding_translation = Off 
+
+これは、変化なし。というか、もともと off になっている。
+
+      Array
+(
+    [internal_encoding] => UTF-8
+    [http_output] => UTF-8
+    [http_output_conv_mimetypes] => ^(text/|application/xhtml\+xml)
+    [func_overload] => 0
+    [func_overload_list] => no overload
+    [mail_charset] => UTF-8
+    [mail_header_encoding] => BASE64
+    [mail_body_encoding] => BASE64
+    [illegal_chars] => 0
+    [encoding_translation] => Off
+    [language] => neutral
+    [detect_order] => Array
+        (
+            [0] => ASCII
+            [1] => UTF-8
+        )
+
+    [substitute_character] => 63
+    [strict_detection] => Off
+)
+
+
+
+(3) mbstring.substitute_character = none; の場合
+
+変化なし
+    [substitute_character] => 63
+
+      Array
+(
+    [internal_encoding] => UTF-8
+    [http_output] => UTF-8
+    [http_output_conv_mimetypes] => ^(text/|application/xhtml\+xml)
+    [func_overload] => 0
+    [func_overload_list] => no overload
+    [mail_charset] => UTF-8
+    [mail_header_encoding] => BASE64
+    [mail_body_encoding] => BASE64
+    [illegal_chars] => 0
+    [encoding_translation] => Off
+    [language] => neutral
+    [detect_order] => Array
+        (
+            [0] => ASCII
+            [1] => UTF-8
+        )
+
+    [substitute_character] => 63
+    [strict_detection] => Off
+)
+
+
+(4) mbstring.func_overload
+
+ (a) mbstring.func_overload = 0 の場合
+
+
+      Array
+(
+    [internal_encoding] => UTF-8
+    [http_output] => UTF-8
+    [http_output_conv_mimetypes] => ^(text/|application/xhtml\+xml)
+    [func_overload] => 0
+    [func_overload_list] => no overload
+    [mail_charset] => UTF-8
+    [mail_header_encoding] => BASE64
+    [mail_body_encoding] => BASE64
+    [illegal_chars] => 0
+    [encoding_translation] => Off
+    [language] => neutral
+    [detect_order] => Array
+        (
+            [0] => ASCII
+            [1] => UTF-8
+        )
+
+    [substitute_character] => 63
+    [strict_detection] => Off
+)
+
+ (b) mbstring.func_overload = 1 の場合
+
+[func_overload] => 1
+[func_overload_list] => Array
+    (
+        [mail] => mb_send_mail
+    )
+
+
+(c) mbstring.func_overload = 2 の場合
+
+    [func_overload] => 2
+    [func_overload_list] => Array
+        (
+            [strlen] => mb_strlen
+            [strpos] => mb_strpos
+            [strrpos] => mb_strrpos
+            [stripos] => mb_stripos
+            [strripos] => mb_strripos
+            [strstr] => mb_strstr
+            [strrchr] => mb_strrchr
+            [stristr] => mb_stristr
+            [substr] => mb_substr
+            [strtolower] => mb_strtolower
+            [strtoupper] => mb_strtoupper
+            [substr_count] => mb_substr_count
+        )
+
+
+
+(5) mbstring.strict_detection = On の場合
+
+この部分のみが変わる。
+
+[strict_detection] => On
+
+
+;; 修正時刻: Wed Feb  9 16:35:58 2022
