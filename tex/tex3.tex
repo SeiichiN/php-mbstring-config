@@ -1,0 +1,44 @@
+\documentclass[uplatex, dvipdfmx]{jsarticle}
+
+\include{begin}
+
+\section{『独習PHP』での記述の変化}
+
+『独習PHP』という本では、以下のように版によって記述が異なる。
+
+「独習PHP・第2版」(PHP5.3.2)
+\begin{tcolorbox}
+default\_charset = "UTF-8" \\
+mbstring.language = Japanese \\
+mbstring.internal\_encoding = UTF-8 \\
+mbstring.encoding\_translation = Off \\
+mbstring.http\_input = auto \\
+mbstring.http\_output = pass \\
+mbstring.detect\_order = UTF-8, SJIS, EUC-JP, JIS, ASCII \\
+mbstring.substitute\_character = none 
+\end{tcolorbox}
+
+「独習PHP・第3版」(PHP7.0.1)
+
+\begin{tcolorbox}
+default\_charset = "UTF-8" とするだけで、mbstringについては言及なし。
+\end{tcolorbox}
+
+\rightline{(参考)『独習PHP・第3版』山田祥寛・著 \ 翔泳社 \ 2016年4月8日 \ 初版第1刷}
+
+ちなみに、php.iniについての設定は、以下のようにすることを同書では勧めている。
+
+\begin{tcolorbox}
+ output\_buffering = 4096 \\
+ error\_reporting = E\_ALL \& \textasciitilde E\_NOTICE \\
+ default\_charset = ``UTF-8'' \\
+ date.timezone = Asia/Tokyo \\
+ session.use\_only\_cookies = On
+\end{tcolorbox}
+
+
+
+
+\include{end}
+
+%% 修正時刻： Thu Feb 10 07:24:47 2022

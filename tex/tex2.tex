@@ -1,0 +1,113 @@
+\documentclass[uplatex, dvipdfmx]{jsarticle}
+
+\include{begin}
+
+\section{さまざなサイトでの設定例}
+
+\subsection{PHP入門}
+
+\href{https://webkaru.net/php/mbstring-php-ini/}{日本語環境の設定 - mbstring(PHP入門)}
+
+(記事執筆時の日時は不明)    
+
+\begin{tcolorbox}
+\textgt{\Large mbstringの設定} \\
+ 
+[mbstring] \\
+mbstring.language = Japanese ← コメント（;）をはずします。\\
+mbstring.internal\_encoding = UTF-8 ← コメントをはずし、内部エンコーディングをUTF-8へ。 \\
+mbstring.http\_input = auto ← コメント（;）をはずします。 \\
+mbstring.http\_output = UTF-8 ← コメントをはずし、エンコーディングをUTF-8へ。 \\
+mbstring.encoding\_translation = On ← コメントをはずし、Onに。\\
+mbstring.detect\_order = auto ← コメント（;）をはずします。
+\end{tcolorbox}
+
+「PHPマニュアル」についての言及はない。
+
+
+\subsection{TechAcademy}
+
+\href{https://techacademy.jp/magazine/39850}
+{PHPでmbstringを設定して日本語環境に対応する方法を現役エンジニアが解説【初心者向け】(TechAcademy)}
+
+(2019/6/30)
+
+\begin{tcolorbox}
+次にmbstringの設定を行います。
+
+php.iniで「mbstring.internal\_encoding」を検索します。mbstring.internal\_encoding = 文字コード で設定することで、マルチバイト文字列関数でエンコードを行う際にここで設定された文字コードがデフォルト文字コードとなります。
+
+下記の例では、文字コードを「UTF-8」に指定しています。
+
+php.iniで「mbstring.language」を検索します。mbstring.language = 言語 で設定することで、mbstringで使用するデフォルトの言語を指定します。
+
+下記の例では、デフォルトに「Japanese」を設定することで日本語に設定しています。
+
+php.iniで「mbstring.detect\_order」を検索します。mbstring.detect\_order = 文字コード で設定することで、文字コードの自動判別を行う時にどの文字コードから順に確認していくのかを指定します。
+
+最後にphp.iniファイルを保存し、設定は完了です。
+\end{tcolorbox}
+
+
+\subsection{Let'sプログラミング}
+
+\href{https://www.javadrive.jp/php/install/index5.html#section5}
+{php.iniファイルの作成と初期設定(Let'sプログラミング)}
+
+(TATSUO IKURA)
+
+(原稿執筆時の日時は不明)
+
+\begin{tcolorbox}
+; 次の 3 項目は PHP 8 で非推奨となりました \\
+;mbstring.internal\_encoding = \\
+;mbstring.http\_input = \\
+;mbstring.http\_output = \\
+
+[mbstring] \\
+mbstring.language = Japanese \\
+mbstring.encoding\_translation = Off \\
+mbstring.detect\_order = UTF-8,SJIS,EUC-JP,JIS,ASCII \\
+mbstring.substitute\_character = none \\
+mbstring.strict\_detection = Off
+\end{tcolorbox}
+
+「PHP8で非推奨となりました」とあるが、実際は、PHP5.6あたりで非推奨に
+なっている。
+
+また、同じ 「TATSUO IKURA」の名前で書かれている次のサイトでは、
+全く違う記述になっている。
+
+\subsection{PHPBook}
+
+\href{http://phpbook.s25.xrea.com/install/phpini/index5.html#section2}
+{日本語利用の為の設定(PHPBook)}
+
+(TATSUO IKURA)
+
+(原稿執筆時の日時は不明)
+
+\begin{tcolorbox}
+
+[mbstring] \\
+mbstring.language = Japanese \\
+mbstring.internal\_encoding = UTF-8 \\
+mbstring.http\_input = pass \\
+mbstring.http\_output = pass \\
+mbstring.encoding\_translation = Off \\
+mbstring.detect\_order = UTF-8,SJIS,EUC-JP,JIS,ASCII \\
+mbstring.substitute\_character = none \\
+mbstring.func\_overload = 0 \\
+mbstring.strict\_detection = Off \\
+;mbstring.http\_output\_conv\_mimetype= \\
+\end{tcolorbox}
+
+
+
+
+
+
+
+\include{end}
+
+%% 修正時刻： Thu Feb 10 06:41:44 2022

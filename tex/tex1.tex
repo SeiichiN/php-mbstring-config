@@ -11,6 +11,7 @@
 
 \vspace{3mm}
 \begin{tabular}{|l|l|l|} \hline
+ 名前 & デフォルト & 変更履歴 \\ \hline
  mbstring.language & ``neutral'' &  \\
  mbstring.detect\_order & NULL & \\
  mbstring.http\_input & ``pass'' & 非推奨 \\
@@ -76,7 +77,7 @@
 -------------------------------------------------------------------    
 \end{verbatim}
 
-ちなみに \textsf{default\_charset} は 初期値で \textsf{UTF-8} になっている。
+ちなみに php\_info() で確認すると、\textsf{default\_charset} は 初期値で \textsf{UTF-8} になっている。
 
 \subsection{mbstring.language = Japanese を指定する}
 
@@ -150,4 +151,4 @@ mbstring関連以外も含めると、以下のようになる。
 
 \include{end}
 
-%% 修正時刻： Wed Feb  9 21:39:51 2022
+%% 修正時刻： Thu Feb 10 07:10:25 2022
