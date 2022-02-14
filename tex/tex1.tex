@@ -4,10 +4,30 @@
 
 \section{現状}
 
-\subsection{php7入門ノートでの記述}
+\subsection{『php7+MySQL 入門ノート』での記述}
 
+『php7+MySQL 入門ノート』p25 では、以下のようになっている。
 
+ \begin{tcolorbox}
+  394 default\_charset = ``utf-8'' \\
+  552 date.timezone = ``Asia/Tokyo'' \\
+  1018 mbstring.language = Japanese \\
+  1023 mbstring.internal\_encoding = utf-8 \\
+  1026 mbstring.http\_input = utf-8 \\
+  1030 mbstring.http\_output = pass \\
+  1037 mbstring.encoding\_trnaslation = Off \\
+  1041 mbstring.detect\_order = utf-8 \\
+  1045 mbstring.substitute\_character = none
+ \end{tcolorbox}
+
+今度この本の新版が出版されたけれど、この部分の記述は変っていない。
+(店頭での確認のため不確か)
+
+ 
 \subsection{PHPマニュアルでの記述}
+
+\href{https://www.php.net/manual/ja/mbstring.configuration.php}{実行時設定 PHPマニュアル}
+では、各設定項目について解説している。
 
 \vspace{3mm}
 \begin{tabular}{|l|l|l|} \hline
@@ -29,7 +49,7 @@
 
 \subsection{デフォルトでの状況}
 
-以下の1箇所のみ記述を加えた状態で、あとはコメントのままだと、どうなるか？
+以下の1箇所l(date.timezone)のみ記述を加えた状態で、あとはコメントのままだと、どうなるか？
 
 \vspace{3mm}
 \begin{tabular}{|l|} \hline
@@ -47,6 +67,9 @@
  ;mbstring.strict\_detection = Off \\ \hline
 \end{tabular}
 \vspace{3mm}
+
+この状態で MAMP の Start Servers ボタンをクリックして、Apacheサーバー
+を動かしてみる。
 
 以下は、print\_r(mb\_get\_info()); の出力例
 
@@ -151,4 +174,4 @@ mbstring関連以外も含めると、以下のようになる。
 
 \include{end}
 
-%% 修正時刻： Thu Feb 10 07:10:25 2022
+%% 修正時刻： Thu Feb 10 09:26:36 2022
